@@ -21,50 +21,49 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "investor-dashboard",
-    title: "Investor Dashboard",
+    slug: "rest-api-media-downloader",
+    title: "REST API Media Downloader",
     summary:
-      "MDX konten, modal top-up, container queries, dan interaksi halus.",
-    result: "Retensi +15%",
-    hero: "",
-    problem: "Investor kesulitan memantau performa & riwayat transaksi.",
-    solution:
-      "Dashboard performa, modal top-up, dan histori transaksi terstruktur.",
-    features: [
-      "Top-up modal",
-      "Riwayat transaksi",
-      "Grafik performa portofolio",
-    ],
-    tech: ["Vite", "Tailwind", "Laravel", "Chart.js"],
-    metrics: [{ label: "Retensi", value: "+15%" }],
-    links: { demo: "#", caseStudy: "#" },
-    category: "Frontend", // <<— UI/UX heavy
-  },
-  {
-    slug: "google-account-auto-register-bot",
-    title: "Google Account Auto-Register Bot",
-    summary:
-      "Bot otomatisasi pendaftaran akun Google dengan script Shell & Batch. Struktur backend menggunakan PHP OOP.",
-    result: "GMV +32%",
-    hero: "", // (opsional, tambahkan di public/images)
+      "API serbaguna berbasis Node.js yang dapat mengunduh media dari berbagai platform populer serta menyediakan fitur utilitas publik seperti cuaca, waktu dunia, AI snippet, dan lainnya.",
+    result:
+      "Telah digunakan pada berbagai bot WhatsApp dan backend proyek publik dengan uptime stabil dan scraping multi-fungsi yang efisien.",
+    hero: "", // opsional
     problem:
-      "Manual registrasi akun Google menyulitkan operasional skala besar.",
+      "Tidak semua platform menyediakan akses terbuka untuk mengunduh konten atau mengakses informasi seperti cuaca, jadwal salat, dan gempa terkini. Ini menyulitkan integrasi ke dalam aplikasi atau bot yang membutuhkan data real-time.",
     solution:
-      "Dibuat sistem backend + bot CLI untuk otomatisasi pembuatan akun, logging granular, dan validasi.",
+      "REST API modular dengan lebih dari 15+ endpoint scraping dan integrasi pihak ketiga, dibuat untuk memenuhi kebutuhan pengambilan konten media, data publik, serta AI assistant seperti snippet generator.",
     features: [
-      "Script batch & shell CLI-friendly",
-      "Chrome driver",
-      "Logging status granular per akun",
+      "Unduh media dari TikTok, Instagram, YouTube, Spotify, Facebook, Pinterest, Reddit",
+      "Layanan waktu dunia & jadwal salat",
+      "Prakiraan cuaca & kode wilayah (BMKG)",
+      "Informasi gempa terkini dan dirasakan (BMKG)",
+      "Perhitungan zakat otomatis",
+      "SpeedTest dan pengecekan status server (SSL etc.)",
+      "AI code snippet generator (OpenAI, HuggingFace)",
+      "Generate & Read QR Code",
+      "Limit rate & keamanan dasar",
     ],
-    tech: ["PHP", "Shell", "HTML", "Batchfile"],
+    tech: [
+      "Node.js",
+      "Express",
+      "Axios",
+      "Puppeteer",
+      "Cheerio",
+      "ytdl-core",
+      "OpenAI API",
+      "Helmet",
+      "Jimp / Sharp / ZXing",
+      "WppConnect",
+      "Spotify URL Info",
+    ],
     metrics: [
-      { label: "GMV", value: "+32%" },
-      { label: "Akun per hari", value: "500+" },
-      { label: "Error rate", value: "<0.2%" },
+      { label: "Total fitur", value: "15+" },
+      { label: "Platform media", value: "7+" },
+      { label: "Respon rata-rata", value: "< 600ms" },
+      { label: "Stabilitas scraping", value: "~95%" },
     ],
     links: {
-      repo: "https://github.com/ahr-ahr/xixixixi",
-      //caseStudy: "/case-studies/google-bot", // buat markdown atau page lokal
+      repo: "https://github.com/ahr-ahr/api-v1",
     },
     category: "Backend",
   },
