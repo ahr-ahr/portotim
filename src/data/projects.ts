@@ -21,6 +21,84 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "savoria-resto",
+    title: "Savoria Resto - Nikmati Sensasi Kuliner Tak Terlupakan",
+    summary:
+      "Website restoran yang memadukan tampilan modern, informasi lengkap, dan visualisasi menu, galeri, serta testimoni pelanggan secara elegan dengan Tailwind CSS.",
+    hero: "",
+    problem:
+      "Restoran lokal membutuhkan media digital yang menarik dan informatif untuk menyampaikan cerita, menu, serta lokasi mereka agar dapat menjangkau pelanggan secara lebih luas.",
+    solution:
+      "Landing page dengan desain profesional dan animasi AOS, menyajikan informasi restoran seperti tentang kami, galeri visual, menu andalan, testimoni pelanggan, serta info reservasi dan lokasi.",
+    features: [
+      "Navigasi responsif (desktop & mobile)",
+      "Hero section dengan latar belakang dinamis",
+      "Tentang kami dengan foto interior",
+      "Menu andalan dengan gambar dan harga",
+      "Galeri visual dengan grid interaktif",
+      "Testimoni pelanggan bergaya kartu",
+      "Call to action reservasi",
+      "Google Maps lokasi",
+      "AOS animation untuk pengalaman interaktif",
+    ],
+    tech: [
+      "HTML5",
+      "Tailwind CSS",
+      "JavaScript (vanilla)",
+      "AOS Animate on Scroll",
+      "Google Fonts (Inter)",
+      "Google Maps Embed",
+    ],
+    metrics: [
+      { label: "Jumlah menu ditampilkan", value: "3" },
+      { label: "Testimoni pelanggan", value: "3" },
+      { label: "Galeri gambar", value: "6" },
+    ],
+    links: {
+      demo: "",
+      repo: "https://github.com/briangtg/landing-pg2",
+    },
+    category: "Frontend",
+  },
+  {
+    slug: "bersih-kinclong",
+    title: "Bersih Kinclong - Jasa Cuci Sepatu Profesional",
+    summary:
+      "Landing page untuk layanan cuci sepatu profesional dengan berbagai paket layanan seperti deep cleaning, repaint, serta galeri hasil dan testimoni pelanggan.",
+    hero: "",
+    problem:
+      "Banyak pengguna tidak memiliki waktu atau teknik khusus untuk membersihkan sepatu mereka secara menyeluruh, apalagi untuk sepatu kesayangan atau mahal.",
+    solution:
+      "Platform digital untuk mempromosikan layanan cuci sepatu profesional dengan tampilan visual menarik, daftar layanan jelas, hasil nyata, dan akses kontak langsung.",
+    features: [
+      "Hero section dengan CTA",
+      "Deskripsi layanan dengan gambar",
+      "Galeri Before-After hasil cuci sepatu",
+      "Testimoni pelanggan dan form komentar",
+      "Peta lokasi Google Maps",
+      "Informasi kontak lengkap dan waktu operasional",
+      "Responsive navigation & hamburger menu",
+    ],
+    tech: [
+      "HTML5",
+      "CSS (Custom)",
+      "Google Fonts (Montserrat, Open Sans)",
+      "Google Maps Embed",
+      "JavaScript DOM (hamburger toggle)",
+    ],
+    metrics: [
+      { label: "Jenis layanan", value: "3" },
+      { label: "Gambar galeri", value: "6" },
+      { label: "Testimoni pengguna", value: "3" },
+      { label: "Responsivitas", value: "Mobile & Desktop" },
+    ],
+    links: {
+      demo: "",
+      repo: "https://github.com/briangtg/landing-pg",
+    },
+    category: "Frontend",
+  },
+  {
     slug: "rest-api-media-downloader",
     title: "REST API Media Downloader",
     summary:
