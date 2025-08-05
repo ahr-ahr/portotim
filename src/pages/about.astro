@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { projects } from "../data/projects";
+
 
 const team = [
   {
@@ -26,38 +28,6 @@ const team = [
 const vision = "Kami percaya teknologi yang baik adalah yang mempermudah hidup orang, bukan mempersulit.";
 const mission =
   "Kami menggabungkan kekuatan frontend & backend untuk mengirim produk yang cepat, mudah di-maintain, dan siap scale.";
-
-/** ===== Tambahan: Showcase mini (isi sesuai real project) ===== */
-const projects = [
-  {
-    name: "Realtime Courier Tracking",
-    desc: "Pelacakan kurir end-to-end dengan rute dinamis, notifikasi, dan optimasi beban.",
-    tech: ["Astro", "React", "Laravel", "PostgreSQL", "Redis", "gRPC"],
-    demo: "#",       // ganti ke URL demo
-    casestudy: "#"   // ganti ke URL studi kasus
-  },
-  {
-    name: "Investor Dashboard",
-    desc: "Dashboard performa portofolio dengan top-up, histori transaksi, dan grafik interaktif.",
-    tech: ["Vite", "Tailwind", "Laravel", "Chart.js"],
-    demo: "#",
-    casestudy: "#"
-  },
-  {
-    name: "Marketplace Core",
-    desc: "Fondasi marketplace modular: katalog, order, voucher, promosi otomatis, dan banner hybrid.",
-    tech: ["Go", "Laravel", "PostgreSQL"],
-    demo: "#",
-    casestudy: "#"
-  },
-  {
-    name: "Customer Tracking Portal",
-    desc: "Portal pelanggan berbasis peta dengan real-time status dan visualisasi rute kurir.",
-    tech: ["Leaflet", "Socket.io", "ORS"],
-    demo: "#",
-    casestudy: "#"
-  }
-];
 
 // Helper untuk inisial avatar
 function initials(name: string) {
@@ -206,34 +176,51 @@ function initials(name: string) {
   {projects.map((p, i) => (
     <article
       class="reveal rounded-2xl border border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 p-5 shadow-sm"
-      style={`--d:${i * 100}ms`}
+      style={{ "--d": `${i * 100}ms` }}
     >
-            <div class="flex items-start justify-between gap-2">
-              <h3 class="text-base font-semibold dark:text-gray-200">{p.name}</h3>
-            </div>
-            <p class="mt-1 text-sm text-gray-700 dark:text-gray-400">{p.desc}</p>
-            {p.tech?.length ? (
-              <ul class="mt-3 flex flex-wrap gap-2">
-                {p.tech.map((t) => (
-                  <li class="rounded-lg border border-gray-200 bg-white dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 px-2.5 py-1 text-xs text-gray-700">{t}</li>
-                ))}
-              </ul>
-            ) : null}
-            <div class="mt-4 flex gap-3 text-sm">
-              {p.demo && (
-                <a href={p.demo} target="_blank" rel="noreferrer" class="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-700  rounded-lg border border-gray-200 bg-white px-3 py-1.5 transition hover:bg-gray-50">
-                  Demo
-                </a>
-              )}
-              {p.casestudy && (
-                <a href={p.casestudy} target="_blank" rel="noreferrer" class="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-700 rounded-lg border border-gray-200 bg-white px-3 py-1.5 transition hover:bg-gray-50">
-                  Studi Kasus
-                </a>
-              )}
-            </div>
-          </article>
-        ))}
+      <div class="flex items-start justify-between gap-2">
+        <h3 class="text-base font-semibold dark:text-gray-200">{p.title}</h3>
       </div>
+
+      <p class="mt-1 text-sm text-gray-700 dark:text-gray-400">{p.summary}</p>
+
+      {p.tech?.length ? (
+        <ul class="mt-3 flex flex-wrap gap-2">
+          {p.tech.map((t, idx) => (
+            <li
+              class="rounded-lg border border-gray-200 bg-white dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 px-2.5 py-1 text-xs text-gray-700"
+            >
+              {t}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+
+      <div class="mt-4 flex gap-3 text-sm">
+        {p.links?.demo && (
+          <a
+            href={p.links.demo}
+            target="_blank"
+            rel="noreferrer"
+            class="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-700 rounded-lg border border-gray-200 bg-white px-3 py-1.5 transition hover:bg-gray-50"
+          >
+            Demo
+          </a>
+        )}
+        {p.links?.caseStudy && (
+          <a
+            href={p.links.caseStudy}
+            target="_blank"
+            rel="noreferrer"
+            class="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-700 rounded-lg border border-gray-200 bg-white px-3 py-1.5 transition hover:bg-gray-50"
+          >
+            Studi Kasus
+          </a>
+        )}
+      </div>
+    </article>
+  ))}
+</div>
     </section>
 
     <!-- CTA penutup -->
