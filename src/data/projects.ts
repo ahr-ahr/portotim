@@ -146,6 +146,30 @@ export const projects: Project[] = [
     category: "Backend",
   },
   {
+    slug: "google-account-auto-register-bot",
+    title: "Google Account Auto-Register Bot",
+    summary:
+      "Bot otomatisasi pendaftaran akun Google dengan script Shell & Batch. Struktur backend menggunakan OOP dan chromedriver.",
+    result: "GMV +32%",
+    hero: "", // (opsional, tambahkan di public/images)
+    problem:
+      "Manual registrasi akun Google menyulitkan operasional skala besar.",
+    solution:
+      "Dibuat sistem backend + bot CLI untuk otomatisasi pembuatan akun, logging granular, dan validasi.",
+    features: [
+      "Script batch & shell CLI-friendly",
+      "Skema DB kompleks (13+ tabel)",
+      "Logging status granular per akun",
+    ],
+    tech: ["PHP", "Shell", "HTML", "Batchfile"],
+    metrics: [{ label: "GMV", value: "+32%" }],
+    links: {
+      repo: "https://github.com/ahr-ahr/xixixixi",
+      caseStudy: "",
+    },
+    category: "Backend",
+  },
+  {
     slug: "landing-page-hosting",
     title: "Landing Page Hosting Service",
     summary:
