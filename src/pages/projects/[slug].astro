@@ -1,0 +1,245 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import type { Project } from "../../data/projects";
+import { projects } from "../../data/projects";
+
+export async function getStaticPaths() {
+  return projects.map((p) => ({
+    params: { slug: p.slug },
+    props: { project: p },
+  }));
+}
+
+function initials(text: string) {
+  return text
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase())
+    .join("");
+}
+
+const { project } = Astro.props as { project: Project };
+---
+
+<!-- Tambahkan CSS animasi di style global -->
+<style>
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .fade-in-up.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<BaseLayout title={project.title}>
+  <article class="mx-auto max-w-5xl px-6 py-8">
+    <!-- HERO -->
+    <header class="space-y-4 fade-in-up">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-200">{project.title}</h1>
+      <div class="flex flex-wrap gap-3 text-xs">
+        <span
+          class="inline-flex items-center gap-1 bg-gray-100 text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200 px-3 py-1 rounded-full border border-gray-300 transition-all duration-300 hover:scale-105"
+        >
+          <i class="fas fa-layer-group text-gray-500 dark:text-gray-200" aria-hidden="true"></i>
+          {project.category}
+        </span>
+        {
+          project.result && (
+            <span class="inline-flex items-center gap-1 bg-green-50 text-green-700 px-3 py-1 rounded-full border border-green-200 transition-all duration-300 hover:scale-105">
+              <i class="fas fa-chart-line" aria-hidden="true"></i>
+              Hasil: {project.result}
+            </span>
+          )
+        }
+      </div>
+
+      {
+        project.hero ? (
+          <img
+            src={project.hero}
+            alt={`Hero ${project.title}`}
+            class="mt-4 w-full aspect-[16/9] object-cover rounded-xl border border-gray-200 shadow-md transform transition-all duration-500 hover:scale-[1.02]"
+            loading="lazy"
+          />
+        ) : (
+          <div class="mt-4 w-full aspect-[16/9] grid place-items-center bg-gray-100 rounded-xl border border-gray-200">
+            <span class="text-3xl font-semibold text-gray-400">
+              {initials(project.title)}
+            </span>
+          </div>
+        )
+      }
+    </header>
+
+    <!-- CONTENT -->
+    <section class="mt-10 grid gap-8">
+      <!-- Masalah & Solusi -->
+      <div class="grid md:grid-cols-2 gap-6 fade-in-up">
+        {
+          project.problem && (
+            <div class="bg-white rounded-xl p-6 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 shadow-sm transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <h2 class="text-lg font-semibold flex items-center gap-2 text-gray-900 dark:text-gray-200">
+                <i
+                  class="fas fa-exclamation-circle text-red-500"
+                  aria-hidden="true"
+                ></i>
+                Masalah
+              </h2>
+              <p class="mt-2 text-gray-600 dark:text-gray-400 leading-relaxed">
+                {project.problem}
+              </p>
+            </div>
+          )
+        }
+        {
+          project.solution && (
+            <div class="bg-white rounded-xl p-6 border border-gray-200 dark:border-gray-700 dark:bg-gray-800 shadow-sm transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <h2 class="text-lg font-semibold flex items-center gap-2 text-gray-900 dark:text-gray-200">
+                <i
+                  class="fas fa-lightbulb text-yellow-500"
+                  aria-hidden="true"
+                ></i>
+                Solusi
+              </h2>
+              <p class="mt-2 text-gray-600 dark:text-gray-400 leading-relaxed">
+                {project.solution}
+              </p>
+            </div>
+          )
+        }
+      </div>
+
+      <!-- Fitur Utama -->
+      {
+        project.features?.length && (
+          <div class="fade-in-up">
+            <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-200 flex items-center gap-2">
+              <i class="fas fa-star text-gray-400" aria-hidden="true"></i> Fitur
+              Utama
+            </h2>
+            <div class="grid sm:grid-cols-2 gap-4">
+              {project.features?.map((f) => (
+                <div class="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+                  <i
+                    class="fas fa-check-circle text-green-500 mt-1"
+                    aria-hidden="true"
+                  ></i>
+                  <p class="text-gray-700 dark:text-gray-200">{f}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )
+      }
+
+      <!-- Teknologi -->
+      {
+        project.tech?.length && (
+          <div class="fade-in-up">
+            <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-200 flex items-center gap-2">
+              <i class="fas fa-tools text-gray-400" aria-hidden="true"></i>
+              Teknologi
+            </h2>
+            <div class="flex flex-wrap gap-2">
+              {project.tech?.map((t) => (
+                <span class="bg-gray-100 border border-gray-300 px-3 py-1 rounded-full text-sm text-gray-700 dark:text-gray-200 dark:bg-gray-800 dark:border-gray-700 transition-all duration-300 hover:scale-105 hover:bg-gray-200">
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        )
+      }
+
+      <!-- Metrics -->
+      {
+        project.metrics && project.metrics.length > 0 && (
+          <div class="fade-in-up">
+            <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-200 flex items-center gap-2">
+              <i class="fas fa-chart-bar text-gray-400" aria-hidden="true"></i>
+              Metrics / Hasil
+            </h2>
+            <div class="grid sm:grid-cols-3 gap-4">
+              {project.metrics.map((m) => (
+                <div class="bg-white rounded-xl border border-gray-200 dark:bg-gray-800 dark:border-gray-700 p-4 text-center shadow-sm transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                  <p class="text-gray-500 dark:text-gray-200 text-sm">{m.label}</p>
+                  <p class="text-2xl font-bold text-gray-900 dark:text-gray-400">{m.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )
+      }
+
+      <!-- Links -->
+      {
+        (project.links?.demo ||
+          project.links?.repo ||
+          project.links?.caseStudy) && (
+          <div class="fade-in-up">
+            <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-200 flex items-center gap-2">
+              <i class="fas fa-link text-gray-400" aria-hidden="true"></i>
+              Tautan
+            </h2>
+            <div class="flex flex-wrap gap-3">
+              {project.links?.demo && (
+                <a
+                  href={project.links.demo}
+                  target="_blank"
+                  class="bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg hover:bg-gray-700 focus:ring-2 focus:ring-gray-400 transform transition-all duration-300 hover:scale-105"
+                >
+                  Demo
+                </a>
+              )}
+              {project.links?.repo && (
+                <a
+                  href={project.links.repo}
+                  target="_blank"
+                  class="bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg hover:bg-gray-200 focus:ring-2 focus:ring-gray-300 transform transition-all duration-300 hover:scale-105"
+                >
+                  Repo
+                </a>
+              )}
+              {project.links?.caseStudy && (
+                <a
+                  href={project.links.caseStudy}
+                  target="_blank"
+                  class="bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg hover:bg-gray-200 focus:ring-2 focus:ring-gray-300 transform transition-all duration-300 hover:scale-105"
+                >
+                  Studi Kasus
+                </a>
+              )}
+            </div>
+          </div>
+        )
+      }
+    </section>
+  </article>
+
+  <!-- JS Animasi -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const elements = document.querySelectorAll(".fade-in-up");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+            observer.unobserve(entry.target); // supaya animasi hanya sekali
+          }
+        });
+      },
+      { threshold: 0.2 } // 20% elemen terlihat, baru animasi jalan
+    );
+
+    elements.forEach((el) => observer.observe(el));
+  });
+</script>
+
+</BaseLayout>

@@ -1,0 +1,385 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xwpqngqw";
+---
+
+<BaseLayout title="Kontak">
+  <style is:global>
+  /* ==== Reveal (fade + slide) ==== */
+  .reveal { opacity: 0; transform: translateY(10px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.is-visible { opacity: 1; transform: none; }
+  .reveal[style*="--d"] { transition-delay: var(--d); }
+
+  /* ==== Overlay (loader & modal backdrop) ==== */
+  @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+  @keyframes fadeOut { from { opacity: 1 } to { opacity: 0 } }
+  .backdrop-enter { animation: fadeIn .18s ease forwards; }
+  .backdrop-leave { animation: fadeOut .18s ease forwards; }
+
+  /* ==== Modal dialog pop-in ==== */
+  @keyframes popIn { from { opacity: 0; transform: scale(.96) } to { opacity: 1; transform: scale(1) } }
+  @keyframes popOut { from { opacity: 1; transform: scale(1) } to { opacity: 0; transform: scale(.98) } }
+  .modal-enter { animation: popIn .22s ease forwards; }
+  .modal-leave { animation: popOut .16s ease forwards; }
+
+  /* ==== Submit btn micro-interaction (press + success pulse kecil) ==== */
+  .btn-press:active { transform: scale(.98) }
+  @keyframes pulseOnce { 0%{transform:scale(1)} 50%{transform:scale(1.02)} 100%{transform:scale(1)} }
+  .btn-pulse { animation: pulseOnce .22s ease }
+
+  /* Prefers reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal.is-visible { opacity:1 !important; transform:none !important; transition:none !important; }
+    .backdrop-enter, .backdrop-leave, .modal-enter, .modal-leave, .btn-pulse { animation: none !important; }
+  }
+
+  /* ===== Ocean (bottom decoration) ===== */
+.ocean {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 110px;
+  overflow: hidden;
+}
+.ocean .waves {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 120px;
+  display: block;
+}
+
+/* Warna gelombang (light/dark) */
+.wave { fill: #cae7ff; opacity: .7; }
+.layer2 { fill: #b9dcff; opacity: .55; }
+.layer3 { fill: #a6d2ff; opacity: .45; }
+.dark .wave  { fill: #1b2741; }
+.dark .layer2{ fill: #16213a; }
+.dark .layer3{ fill: #121c33; }
+
+/* Parallax gerak horizontal */
+.wave { animation: drift 14s linear infinite; }
+.layer2 { animation-duration: 18s; animation-delay: -2s; }
+.layer3 { animation-duration: 22s; animation-delay: -1s; }
+@keyframes drift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-25%); } /* subtle loop */
+}
+
+/* Gelembung kecil naik */
+.bubbles { position: absolute; inset: 0; }
+.bubbles span{
+  position: absolute; bottom: 10px;
+  left: var(--x, 50%);
+  width: 8px; height: 8px; border-radius: 9999px;
+  background: #93c5fd; opacity: .5;
+  animation: rise 6.5s ease-in infinite;
+  animation-delay: var(--d, 0s);
+}
+.bubbles span::after{
+  content:""; position:absolute; inset:-2px; border-radius:inherit;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.5);
+}
+.dark .bubbles span{ background:#475569; opacity:.35; }
+
+@keyframes rise {
+  0%   { transform: translate(-50%, 0) scale(.9); }
+  100% { transform: translate(-50%, -90px) scale(1); opacity: 0; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .wave, .bubbles span { animation: none !important; }
+}
+
+</style>
+  <section class="mx-auto w-full max-w-3xl h-screen px-4 py-10">
+<header class="text-center reveal" style="--d:0ms">
+      <h1 class="text-3xl font-semibold tracking-tight">Kontak</h1>
+      <p class="mt-2 text-muted dark:text-gray-400">Kirim pesan untuk kolaborasi/proyek.</p>
+    </header>
+
+    <div class="mt-6 rounded-2xl border border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 shadow-sm reveal" style="color-scheme: light, --d:120ms">
+      <form
+        id="contact-form"
+        action={FORMSPREE_ENDPOINT}
+        method="POST"
+        accept-charset="UTF-8"
+        class="p-5 sm:p-7"
+      >
+        <div class="hidden" aria-hidden="true">
+          <label>Jangan diisi <input name="company" tabindex="-1" autocomplete="off" /></label>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div class="space-y-1" style="--d:180ms">
+            <label for="name" class="block text-sm font-medium text-gray-900 dark:text-gray-200">Nama</label>
+            <input
+              id="name" name="name" required minlength="2" autocomplete="name" placeholder="Nama lengkap"
+              class="w-full appearance-none rounded-xl border border-gray-300 bg-white p-3 text-gray-900
+                     placeholder:text-gray-500 shadow-xs focus:outline-none focus:ring-2 focus:ring-black/30 dark:bg-gray-800 dark:border-gray-700 "
+            />
+          </div>
+
+          <div class="space-y-1" style="--d:180ms">
+            <label for="email" class="block text-sm font-medium text-gray-900 dark:text-gray-200">Email</label>
+            <input
+              id="email" name="email" type="email" inputmode="email" autocomplete="email" required
+              placeholder="nama@domain.com"
+              class="w-full appearance-none rounded-xl border border-gray-300 bg-white p-3 text-gray-900
+                     placeholder:text-gray-500 shadow-xs focus:outline-none focus:ring-2 focus:ring-black/30 dark:bg-gray-800 dark:border-gray-700 "
+            />
+          </div>
+
+          <div class="space-y-1 sm:col-span-2" style="--d:180ms">
+            <label for="message" class="block text-sm font-medium text-gray-900 dark:text-gray-200">Pesan</label>
+            <textarea
+              id="message" name="message" required minlength="10"
+              placeholder="Ceritakan kebutuhan atau ide kamu…"
+              class="h-36 w-full resize-y appearance-none rounded-xl border border-gray-300 bg-white p-3 text-gray-900
+                     placeholder:text-gray-500 shadow-xs focus:outline-none focus:ring-2 focus:ring-black/30 dark:bg-gray-800 dark:border-gray-700 "
+            ></textarea>
+            <p class="text-xs text-muted">Minimal 10 karakter agar konteks lebih jelas.</p>
+          </div>
+        </div>
+
+    <div class="mt-5 flex items-center justify-between gap-3 sm:justify-end reveal" style="--d:300ms">
+          <p id="form-status" class="text-sm" role="status" aria-live="polite"></p>
+
+          <button
+            id="submit-btn" type="submit"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-xl
+                   bg-black px-5 py-3 font-medium text-white transition
+                   hover:bg-black focus:outline-none focus:ring-2 focus:ring-black/50
+                   active:scale-[.98] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto border dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 "
+          >
+            <span id="btn-text">Kirim</span>
+          </button>
+        </div>
+      </form>
+    </div>
+    <!-- Dekor bawah: gelombang + gelembung -->
+<div class="ocean pointer-events-none" aria-hidden="true">
+  <svg class="waves" viewBox="0 0 1440 120" preserveAspectRatio="none">
+    <defs>
+      <path id="wave-path" d="M0,60 C240,120 480,0 720,60 C960,120 1200,0 1440,60 V120 H0 Z"></path>
+    </defs>
+    <!-- 3 layer gelombang parallax -->
+    <use href="#wave-path" class="wave layer1"></use>
+    <use href="#wave-path" class="wave layer2"></use>
+    <use href="#wave-path" class="wave layer3"></use>
+  </svg>
+
+  <!-- Gelembung naik -->
+  <div class="bubbles">
+    <span style="--x:10%; --d:-0s;"></span>
+    <span style="--x:25%; --d:-1.2s;"></span>
+    <span style="--x:40%; --d:-.6s;"></span>
+    <span style="--x:65%; --d:-2s;"></span>
+    <span style="--x:82%; --d:-.9s;"></span>
+  </div>
+</div>
+
+  </section>
+
+  <div
+    id="screen-loader"
+    class="fixed inset-0 z-40 hidden items-center justify-center bg-black/40 backdrop-blur-sm"
+    aria-live="assertive" aria-modal="true" role="alert"
+  >
+    <div class="flex flex-col items-center gap-3 rounded-xl bg-white px-6 py-5 shadow-lg">
+      <svg class="h-6 w-6 animate-spin text-black" viewBox="0 0 24 24" fill="none">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+      </svg>
+      <p class="text-sm font-medium text-gray-700">Mengirim…</p>
+    </div>
+  </div>
+
+  <div
+    id="app-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 p-4"
+    role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc"
+  >
+    <div class="w-full max-w-sm rounded-2xl bg-white shadow-xl outline-none">
+      <div class="flex items-start gap-3 p-5">
+        <!-- Icon -->
+        <div id="modal-icon" class="mt-1 grid h-9 w-9 place-items-center rounded-full bg-green-100 text-green-600">
+          <!-- check -->
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
+        </div>
+        <div class="min-w-0">
+          <h3 id="modal-title" class="text-base font-semibold text-gray-900">Terima kasih!</h3>
+          <p id="modal-desc" class="mt-1 text-sm text-gray-600">Pesan kamu sudah terkirim.</p>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 border-t border-gray-100 p-4">
+        <button id="modal-close"
+          class="rounded-xl bg-black px-4 py-2 text-sm font-medium text-white
+                 hover:bg-black-700 focus:outline-none focus:ring-2 focus:ring-red-400/50">
+          Oke
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+  (function () {
+    // ===== Reveal on view =====
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function runReveal() {
+      const items = document.querySelectorAll('.reveal');
+      if (prefersReduced) {
+        items.forEach(el => el.classList.add('is-visible'));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(({ target, isIntersecting }) => {
+          if (isIntersecting) {
+            target.classList.add('is-visible');
+            io.unobserve(target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
+      items.forEach(el => io.observe(el));
+    }
+    runReveal();
+
+    // ====== Contact form logic (punyamu) + animasi overlay & modal ======
+    const form = document.getElementById('contact-form');
+    const statusEl = document.getElementById('form-status');
+    const btn = document.getElementById('submit-btn');
+    const btnText = document.getElementById('btn-text');
+    const overlay = document.getElementById('screen-loader');
+
+    const modal = document.getElementById('app-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalIcon = document.getElementById('modal-icon');
+    const modalClose = document.getElementById('modal-close');
+
+    let lastFocusedEl = null;
+
+    function setStatus(t, ok = true) {
+      statusEl.textContent = t;
+      statusEl.className = 'text-sm ' + (ok ? 'text-green-600' : 'text-red-600');
+    }
+
+    // Overlay helpers (fade in/out)
+    const showOverlay = () => {
+      if (!overlay) return;
+      overlay.classList.remove('hidden');
+      overlay.classList.add('flex', 'backdrop-enter');
+      overlay.classList.remove('backdrop-leave');
+    };
+    const hideOverlay = () => {
+      if (!overlay) return;
+      overlay.classList.remove('backdrop-enter');
+      overlay.classList.add('backdrop-leave');
+      // tunggu animasi selesai, baru sembunyikan
+      overlay.addEventListener('animationend', function onEnd() {
+        overlay.removeEventListener('animationend', onEnd);
+        overlay.classList.add('hidden');
+        overlay.classList.remove('flex', 'backdrop-leave');
+      });
+    };
+
+    // Modal helpers (pop-in)
+    function showModal({ title, text, variant = 'success' }) {
+      if (variant === 'success') {
+        modalIcon.className = "mt-1 grid h-9 w-9 place-items-center rounded-full bg-green-100 text-green-600";
+        modalIcon.innerHTML = '<svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>';
+      } else {
+        modalIcon.className = "mt-1 grid h-9 w-9 place-items-center rounded-full bg-red-100 text-red-600";
+        modalIcon.innerHTML = '<svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 18L18 6M6 6l12 12"/></svg>';
+      }
+
+      modalTitle.textContent = title || '';
+      modalDesc.textContent = text || '';
+
+      lastFocusedEl = document.activeElement;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex', 'backdrop-enter');
+      // animasi dialog
+      const dialog = modal.querySelector('.w-full.max-w-sm');
+      dialog?.classList.add('modal-enter');
+      document.body.classList.add('overflow-hidden');
+
+      setTimeout(() => modalClose.focus(), 0);
+    }
+
+    function hideModal() {
+      // animasi out dialog
+      const dialog = modal.querySelector('.w-full.max-w-sm');
+      dialog?.classList.remove('modal-enter');
+      dialog?.classList.add('modal-leave');
+
+      // animasi out backdrop
+      modal.classList.remove('backdrop-enter');
+      modal.classList.add('backdrop-leave');
+
+      modal.addEventListener('animationend', function onEnd() {
+        modal.removeEventListener('animationend', onEnd);
+        modal.classList.add('hidden');
+        modal.classList.remove('flex', 'backdrop-leave');
+        dialog?.classList.remove('modal-leave');
+        document.body.classList.remove('overflow-hidden');
+        if (lastFocusedEl) lastFocusedEl.focus();
+      });
+    }
+
+    modal.addEventListener('click', (e) => { if (e.target === modal) hideModal(); });
+    modalClose.addEventListener('click', hideModal);
+    document.addEventListener('keydown', (e) => {
+      if (!modal.classList.contains('hidden') && e.key === 'Escape') hideModal();
+    });
+
+    async function handleSubmit(e) {
+      if (form.elements['company']?.value) return; // honeypot
+      e.preventDefault();
+
+      setStatus('');
+      btn.disabled = true;
+      btnText.textContent = 'Mengirim…';
+      btn.classList.add('btn-pulse');
+      showOverlay();
+
+      try {
+        const fd = new FormData(form);
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: fd,
+        });
+
+        hideOverlay();
+        btn.disabled = false;
+        btnText.textContent = 'Kirim';
+        setTimeout(() => btn.classList.remove('btn-pulse'), 200);
+
+        if (res.ok) {
+          form.reset();
+          showModal({ title: 'Terima kasih!', text: 'Pesan kamu sudah terkirim.', variant: 'success' });
+          setStatus('');
+        } else {
+          const data = await res.json().catch(() => ({}));
+          const msg = data?.errors?.[0]?.message || 'Gagal mengirim. Coba lagi sebentar.';
+          showModal({ title: 'Gagal mengirim', text: msg, variant: 'error' });
+          setStatus('', false);
+        }
+      } catch {
+        hideOverlay();
+        btn.disabled = false;
+        btnText.textContent = 'Kirim';
+        btn.classList.remove('btn-pulse');
+        showModal({ title: 'Kesalahan jaringan', text: 'Coba lagi beberapa saat.', variant: 'error' });
+        setStatus('', false);
+      }
+    }
+
+    form.addEventListener('submit', handleSubmit);
+  })();
+</script>
+</BaseLayout>

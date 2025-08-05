@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom utilities */
+.container-narrow { @apply max-w-5xl mx-auto px-4; }
+.card { @apply rounded-2xl border p-5 shadow-sm; }
+.btn { @apply inline-flex items-center px-4 py-2 rounded-xl border text-sm; }
+.btn-primary { @apply font-medium border-black; }
+.text-muted { @apply text-gray-600; }

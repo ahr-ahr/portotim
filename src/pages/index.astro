@@ -1,0 +1,357 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { projects } from "../data/projects";
+
+function categoryClasses(c: string) {
+  const map: Record<string, string> = {
+    Backend: "border-blue-200 bg-blue-50 text-blue-700",
+    Frontend: "border-pink-200 bg-pink-50 text-pink-700",
+    "Backend + Frontend": "border-amber-200 bg-amber-50 text-amber-700",
+  };
+  return map[c] ?? "border-gray-200 bg-gray-50 text-gray-700";
+}
+
+function initials(text: string) {
+  return text
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase())
+    .join("");
+}
+
+function gradientFromString(s: string) {
+  const n = Array.from(s).reduce((acc, ch) => acc + ch.charCodeAt(0), 0) % 3;
+  const variants = [
+    "from-sky-100 to-sky-200 text-sky-700 ring-sky-300/60",
+    "from-indigo-100 to-indigo-200 text-indigo-700 ring-indigo-300/60",
+    "from-emerald-100 to-emerald-200 text-emerald-700 ring-emerald-300/60",
+  ];
+  return variants[n];
+}
+---
+
+<style is:global>
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+    transition-delay: var(--d, 0ms);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal,
+    .reveal.is-visible {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+
+<BaseLayout
+  title="Tim ?? — Web/App cepat & bersih"
+  description="Kami berdua mengerjakan web/app yang cepat, rapi, dan fokus pada hasil."
+>
+  <section
+    id="hero"
+    class="min-h-screen flex flex-col justify-center bg-gray-50 dark:bg-gray-900 items-center text-center py-12"
+  >
+    <div class="max-w-3xl mx-auto px-4">
+      <h1
+        class="reveal text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-gray-50"
+        style="--d:0ms"
+      >
+        Bangun produk cepat, rapi, dan terukur.
+      </h1>
+
+      <p class="reveal mt-4 text-gray-600 dark:text-gray-400" style="--d:120ms">
+        Kami tim kecil beranggotakan dua orang: frontend & backend. Fokus kami
+        adalah performa, UX yang bersih, dan dampak nyata pada bisnis Anda.
+      </p>
+
+      <div class="reveal mt-6 flex justify-center gap-4" style="--d:200ms">
+        <a
+          href="/contact"
+          class="px-5 py-2.5 bg-black text-white rounded-lg hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 transition active:scale-[.98]"
+        >
+          Diskusi Proyek
+        </a>
+        <a
+          href="/about"
+          class="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 transition active:scale-[.98]"
+        >
+          Tentang Kami
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="py-8 px-6 bg-gray-50 min-h-screen dark:bg-gray-900">
+    <div>
+      <!-- Header -->
+      <div
+        class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6"
+      >
+        <div>
+          <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Projects</h2>
+          <div class="flex gap-3 mt-4">
+            <button
+              class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700"
+              data-filter="all">Semua</button
+            >
+            <button
+              class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700"
+              data-filter="backend">Backend</button
+            >
+            <button
+              class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700"
+              data-filter="frontend">Frontend</button
+            >
+            <button
+              class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700"
+              data-filter="backend + frontend">Backend + Frontend</button
+            >
+          </div>
+        </div>
+        <div class="flex items-center gap-3 mt-4 sm:mt-0">
+          <!-- Tombol List -->
+          <button id="btn-list" class="p-2 bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 rounded">
+            <i class="fas fa-list"></i>
+          </button>
+          <!-- Tombol Grid -->
+          <button
+            id="btn-grid"
+            class="p-2 bg-gray-200 rounded hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700"
+          >
+            <i class="fas fa-th"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Projects Container -->
+      <div id="project-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {
+          projects.map((p) => (
+            <a
+              href={`/projects/${p.slug}`}
+              class="project-card flex bg-white rounded-xl dark:bg-slate-800 shadow-md overflow-hidden hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-sky-300/50"
+              data-category={p.category.toLowerCase()}
+            >
+              {/* Gambar / Fallback */}
+              {p.hero ? (
+                <img
+                  src={p.hero}
+                  alt={p.title}
+                  class="project-img w-40 object-cover"
+                />
+              ) : (
+                <div
+                  class={`project-fallback w-40 grid place-items-center bg-gradient-to-br ${gradientFromString(p.title)} ring-1`}
+                >
+                  <span class="text-lg font-semibold">{initials(p.title)}</span>
+                </div>
+              )}
+
+              {/* Konten */}
+              <div class="flex flex-col justify-between p-4 flex-1">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{p.title}</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">{p.summary}</p>
+
+                <div class="flex flex-wrap gap-2 mt-3">
+                  <span
+                    class={`text-[11px] px-2 py-0.5 rounded-full border ${categoryClasses(p.category)}`}
+                  >
+                    {p.category}
+                  </span>
+                  {(p.tech ?? []).map((t) => (
+                    <span class="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <span class="mt-4 inline-block self-start bg-black text-white px-4 py-2 rounded-lg dark:hover:bg-gray-600 dark:bg-gray-700">
+                  Lihat detail
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    // Animasi saat elemen masuk viewport + stagger
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    function animateHero() {
+      const els = document.querySelectorAll("#hero .reveal");
+      if (prefersReduced) {
+        els.forEach((el) => el.classList.add("is-visible"));
+        return;
+      }
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(({ target, isIntersecting }) => {
+            if (isIntersecting) {
+              target.classList.add("is-visible");
+              io.unobserve(target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -8% 0px" }
+      );
+      els.forEach((el) => io.observe(el));
+    }
+
+    // Panggil saat load
+    animateHero();
+
+    function animateCards() {
+      const cards = document.querySelectorAll(
+        "#project-container .project-card"
+      );
+
+      // reset delay & state
+      cards.forEach((el, i) => {
+        el.style.transitionDelay = `${i * 80}ms`; // stagger 80ms
+        el.classList.remove("in-view");
+        void el.offsetWidth; // force reflow
+      });
+
+      if (prefersReduced) {
+        cards.forEach((el) => el.classList.add("in-view"));
+        return;
+      }
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(({ isIntersecting, target }) => {
+            if (isIntersecting) {
+              target.classList.add("in-view");
+              io.unobserve(target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -10% 0px" }
+      );
+
+      cards.forEach((el) => io.observe(el));
+    }
+
+    // Inisiasi
+    animateCards();
+
+    // Re-trigger setelah filter / toggle layout
+    const reboundSelectors = [".filter-btn", "#btn-list", "#btn-grid"];
+    document.querySelectorAll(reboundSelectors.join(",")).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        // beri waktu DOM update dari filter/ubah layout
+        setTimeout(animateCards, 0);
+      });
+    });
+
+    // Re-trigger saat window di-resize (grid kolom berubah)
+    window.addEventListener("resize", () => {
+      clearTimeout(window.__cardsResizeTO);
+      window.__cardsResizeTO = setTimeout(animateCards, 150);
+    });
+
+    // Filter Projects
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const projectCards = document.querySelectorAll(".project-card");
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        // Reset semua tombol ke default
+        filterButtons.forEach((b) => {
+          b.classList.remove("bg-gray-300");
+          b.classList.add("bg-gray-200");
+        });
+
+        // Aktifkan tombol ini
+        btn.classList.add("bg-gray-300");
+        btn.classList.remove("bg-gray-200");
+
+        const filter = btn.getAttribute("data-filter").toLowerCase();
+
+        projectCards.forEach((card) => {
+          const category = card.getAttribute("data-category");
+          if (filter === "all" || category === filter) {
+            card.classList.remove("hidden");
+          } else {
+            card.classList.add("hidden");
+          }
+        });
+      });
+    });
+
+    // Tombol List/Grid
+    const btnList = document.getElementById("btn-list");
+    const btnGrid = document.getElementById("btn-grid");
+    const container = document.getElementById("project-container");
+
+    btnList.addEventListener("click", () => {
+      container.className = "grid grid-cols-1 md:grid-cols-2 gap-6";
+
+      btnList.classList.add("bg-gray-300");
+      btnList.classList.remove("bg-gray-200");
+      btnGrid.classList.remove("bg-gray-300");
+      btnGrid.classList.add("bg-gray-200");
+
+      document.querySelectorAll(".project-card").forEach((card) => {
+        card.classList.add("flex");
+        card.classList.remove("flex-col");
+      });
+
+      // Gambar di kiri
+      document.querySelectorAll(".project-img").forEach((img) => {
+        img.classList.remove("w-full");
+        img.classList.add("w-40");
+      });
+
+      // Fallback resize
+      document.querySelectorAll(".project-fallback").forEach((div) => {
+        div.classList.remove("w-full", "h-40"); // Hapus class grid
+        div.classList.add("w-40"); // Sesuaikan untuk list
+      });
+    });
+
+    btnGrid.addEventListener("click", () => {
+      container.className =
+        "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6";
+
+      btnGrid.classList.add("bg-gray-300");
+      btnGrid.classList.remove("bg-gray-200");
+      btnList.classList.remove("bg-gray-300");
+      btnList.classList.add("bg-gray-200");
+
+      document.querySelectorAll(".project-card").forEach((card) => {
+        card.classList.add("flex-col");
+        card.classList.remove("flex");
+      });
+
+      // Gambar di atas
+      document.querySelectorAll(".project-img").forEach((img) => {
+        img.classList.remove("w-40");
+        img.classList.add("w-full");
+      });
+
+      // Fallback resize
+      document.querySelectorAll(".project-fallback").forEach((div) => {
+        div.classList.remove("w-40", "h-40"); // Hapus dua-duanya
+        div.classList.add("w-full", "h-40"); // Sesuaikan untuk grid
+      });
+    });
+  </script>
+</BaseLayout>
