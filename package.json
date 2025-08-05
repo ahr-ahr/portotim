@@ -11,7 +11,9 @@
     "deploy": "npm run build && npx gh-pages -d dist"
   },
   "dependencies": {
-    "astro": "^4.14.0"
+    "@astrojs/preact": "^4.1.0",
+    "astro": "^4.14.0",
+    "preact": "^10.27.0"
   },
   "devDependencies": {
     "@astrojs/tailwind": "^5.1.0",

@@ -1,7 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { projects } from "../data/projects";
+import { paginate } from '../utils/paginate';
+import PaginatedProjects from "../components/PaginatedProjects.tsx";
 
+const pages = paginate(projects, 4);
+const totalPages = pages.length;
+
+const currentPage = Astro.url.searchParams.get('page') || '1';
+const currentPageIndex = Math.max(0, Math.min(Number(currentPage) - 1, totalPages - 1));
+const currentProjects = pages[currentPageIndex];
 
 const team = [
   {
@@ -56,7 +64,7 @@ function initials(name: string) {
       </p>
 
       <!-- CTA menonjol -->
-      <div class="mx-auto mt-6 flex-nowrap flex-col items-center justify-center gap-3 sm:flex-row">
+      <div class="mx-auto mt-6 flex flex-row flex-wrap items-center justify-center gap-3">
         <a
           href="/portotim/#projects"
           class="inline-flex items-center justify-center rounded-xl border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 transition hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-sky-300/50"
@@ -125,7 +133,8 @@ function initials(name: string) {
               ) : null}
 
               {/* Links */}
-              <div class="mt-4 flex gap-3 text-sm">
+              <div class="mt-4 flex flex-wrap gap-3 text-sm">
+
                 {m.links?.github && (
                   <a
                     href={m.links.github}
@@ -180,62 +189,14 @@ function initials(name: string) {
     </div>
 
     <!-- Showcase / Portofolio -->
-    <section class="mt-12">
-      <div class="mb-4 flex items-end justify-between">
-        <h2 class="text-xl font-semibold tracking-tight">Proyek Pilihan</h2>
-        <a href="/portotim/#projects" class="text-sm font-medium text-black underline dark:text-gray-200 dark:hover:text-gray-300 hover:text-black">Lihat semua</a>
-      </div>
+<section class="mt-12">
+  <div class="mb-4 flex items-end justify-between">
+    <h2 class="text-xl font-semibold tracking-tight">Proyek Pilihan</h2>
+    <a href="/portotim/#projects" class="text-sm font-medium underline text-black dark:text-gray-200 hover:text-black dark:hover:text-gray-300">Lihat semua</a>
+  </div>
 
-      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-  {projects.map((p, i) => (
-    <article
-      class="reveal rounded-2xl border border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 p-5 shadow-sm"
-      style={{ "--d": `${i * 100}ms` }}
-    >
-      <div class="flex items-start justify-between gap-2">
-        <h3 class="text-base font-semibold dark:text-gray-200">{p.title}</h3>
-      </div>
-
-      <p class="mt-1 text-sm text-gray-700 dark:text-gray-400">{p.summary}</p>
-
-      {p.tech?.length ? (
-        <ul class="mt-3 flex flex-wrap gap-2">
-          {p.tech.map((t, idx) => (
-            <li
-              class="rounded-lg border border-gray-200 bg-white dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 px-2.5 py-1 text-xs text-gray-700"
-            >
-              {t}
-            </li>
-          ))}
-        </ul>
-      ) : null}
-
-      <div class="mt-4 flex gap-3 text-sm">
-        {p.links?.demo && (
-          <a
-            href={p.links.demo}
-            target="_blank"
-            rel="noreferrer"
-            class="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-700 rounded-lg border border-gray-200 bg-white px-3 py-1.5 transition hover:bg-gray-50"
-          >
-            Demo
-          </a>
-        )}
-        {p.links?.caseStudy && (
-          <a
-            href={p.links.caseStudy}
-            target="_blank"
-            rel="noreferrer"
-            class="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-700 rounded-lg border border-gray-200 bg-white px-3 py-1.5 transition hover:bg-gray-50"
-          >
-            Studi Kasus
-          </a>
-        )}
-      </div>
-    </article>
-  ))}
-</div>
-    </section>
+  <PaginatedProjects client:load projects={projects} />
+</section>
 
     <!-- CTA penutup -->
 <div class="reveal mt-12 rounded-2xl border border-gray-200 dark:border-gray-700 dark:bg-gray-800  p-6 text-center" style="--d: 150ms">

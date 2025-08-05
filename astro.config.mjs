@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
+import preact from "@astrojs/preact";
 
 export default defineConfig({
   site: "https://ahr-ahr.github.io",
@@ -9,5 +10,6 @@ export default defineConfig({
     tailwind({
       applyBaseStyles: true,
     }),
+    preact(),
   ],
 });
