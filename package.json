@@ -7,7 +7,8 @@
     "dev": "astro dev --host",
     "build": "astro build",
     "preview": "astro preview --host",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "deploy": "npm run build && npx gh-pages -d dist"
   },
   "dependencies": {
     "astro": "^4.14.0"
