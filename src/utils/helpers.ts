@@ -7,34 +7,25 @@ export function initials(text: string): string {
     .join("");
 }
 
-export function gradientFromString(input: string): string {
-  const colors = [
-    ["from-pink-200", "to-pink-400"],
-    ["from-blue-200", "to-blue-400"],
-    ["from-green-200", "to-green-400"],
-    ["from-yellow-200", "to-yellow-400"],
-    ["from-purple-200", "to-purple-400"],
-    ["from-indigo-200", "to-indigo-400"],
-    ["from-rose-200", "to-rose-400"],
+export function gradientFromString(s: string) {
+  const n = Array.from(s).reduce((acc, ch) => acc + ch.charCodeAt(0), 0) % 3;
+  const variants = [
+    "from-sky-100 to-sky-200 text-sky-700 ring-sky-300/60",
+    "from-indigo-100 to-indigo-200 text-indigo-700 ring-indigo-300/60",
+    "from-emerald-100 to-emerald-200 text-emerald-700 ring-emerald-300/60",
   ];
-
-  const hash = input
-    .split("")
-    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
-
-  const [from, to] = colors[hash % colors.length];
-  return `${from} ${to}`;
+  return variants[n];
 }
 
 export function categoryClasses(category: string): string {
   switch (category.toLowerCase()) {
     case "backend":
-      return "border-rose-400 text-rose-700 bg-rose-100 dark:bg-rose-900";
+      return "border-blue-200 bg-blue-50 text-blue-700";
     case "frontend":
-      return "border-sky-400 text-sky-700 bg-sky-100 dark:bg-sky-900";
+      return "border-pink-200 bg-pink-50 text-pink-700";
     case "backend + frontend":
-      return "border-violet-400 text-violet-700 bg-violet-100 dark:bg-violet-900";
+      return "border-amber-200 bg-amber-50 text-amber-700";
     default:
-      return "border-gray-300 text-gray-600 bg-gray-100 dark:bg-gray-800";
+      return "border-gray-200 bg-gray-50 text-gray-700";
   }
 }
