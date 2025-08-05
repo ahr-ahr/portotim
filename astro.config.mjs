@@ -3,7 +3,7 @@ import tailwind from "@astrojs/tailwind";
 
 export default defineConfig({
   site: "https://ahr-ahr.github.io",
-  base: "/",
+  base: "/portotim",
   outDir: "dist",
   integrations: [
     tailwind({
